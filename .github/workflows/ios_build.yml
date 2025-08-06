@@ -1,4 +1,4 @@
-name: iOS Build
+name: iOS Build app
 
 on:
   workflow_dispatch: # يسمح بتشغيل سير العمل يدويًا

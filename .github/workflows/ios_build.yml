@@ -1,30 +1,34 @@
 name: iOS Build
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # يسمح بتشغيل سير العمل يدوياً
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-latest # استخدام أحدث إصدار من macOS runner
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Checkout Repository # خطوة لسحب الكود من المستودع
+        uses: actions/checkout@v4 # ✅ تم التحديث إلى v4
 
-      - name: Setup Flutter
+      - name: Setup Flutter # خطوة لإعداد بيئة Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.10.6"
+          # ✅ تم تحديث إصدار Flutter ليتوافق مع Dart SDK >=3.8.1 <4.0.0
+          # يمكنك التحقق من أحدث الإصدارات المتوافقة على موقع Flutter
+          flutter-version: "3.22.x" 
           architecture: x64
 
-      - name: Install Dependencies
+      - name: Install Dependencies # خطوة لتثبيت تبعيات Dart
         run: flutter pub get
 
-      - name: Build iOS App
+      - name: Build iOS App # خطوة لبناء تطبيق iOS
+        # --no-codesign يستخدم للبناء دون الحاجة إلى شهادة توقيع
+        # هذا مفيد لـ CI/CD ولكن ستحتاج لتوقيع التطبيق يدوياً لاحقاً للتوزيع
         run: flutter build ios --no-codesign
 
-      - name: Archive Build Artifacts
-        uses: actions/upload-artifact@v3
+      - name: Archive Build Artifacts # خطوة لأرشفة ناتج البناء
+        uses: actions/upload-artifact@v4 # ✅ تم التحديث إلى v4
         with:
-          name: ios-build
-          path: build/ios/iphoneos
+          name: ios-build # اسم الملف الذي سيتم رفعه
+          path: build/ios/iphoneos # المسار الذي يحتوي على ناتج بناء iOS
